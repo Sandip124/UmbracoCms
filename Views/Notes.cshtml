@@ -1,0 +1,64 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Notes>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Newtonsoft.Json.Linq
+@using Umbraco.Cms.Core.Models
+@{
+    Layout = "MasterLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row section">
+        <div class="col-md-12">
+            <h3>Notes</h3>
+        </div>
+    </div>
+</div>
+
+
+@{
+    var selection = Umbraco.Content(Guid.Parse("d988625a-121a-435b-ab38-539c1f546970"))
+        .ChildrenOfType("noteItem")
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate);
+}
+<div class="container">
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered" id="myTable">
+            <thead>
+            <tr>
+                <th>SN</th>
+                <th>Book Name</th>
+                <th>Category</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            @{ int counter = 1; }
+            @foreach (var item in selection)
+            {
+                <tr>
+                    <th>@counter</th>
+                    <th>
+                        <a target="_blank" class="link" href="@item.Value("url")" download="">
+                            @item.Value("noteName") <i class="fa fa-link"></i>
+                        </a>
+                    </th><th>@item.Value("category")</th>
+                    <th>
+                        @{
+                            var links = item.Value<IEnumerable<Link>>("url");
+                            var singleLink = links?.FirstOrDefault();
+                        }
+                        <a target="_blank" class="btn btn-primary btn-sm download" href="@singleLink?.Url" download="">Download</a>
+                    </th>
+                </tr>
+                counter++;
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

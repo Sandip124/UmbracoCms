@@ -1,0 +1,127 @@
+﻿<div ng-controller="Our.Umbraco.Meganav.Dialogs.ItemTypeDialogController as vm">
+
+    <umb-load-indicator ng-if="vm.loading"></umb-load-indicator>
+
+    <umb-editor-view ng-if="!vm.loading">
+
+        <umb-editor-header name="vm.labels.settings"
+                           name-required="false"
+                           name-locked="true"
+                           navigation="vm.tabs"
+                           hide-alias="true"
+                           hide-icon="true"
+                           hide-description="true">
+        </umb-editor-header>
+
+        <umb-editor-container>
+            <umb-box>
+                <umb-box-content>
+                    <umb-control-group label="@general_name" required="true">
+                        <input type="text" name="name" class="umb-property-editor" ng-model="vm.itemType.name" />
+                    </umb-control-group>
+
+                    <umb-control-group label="@general_icon">
+                        <umb-node-preview name="vm.itemType.icon"
+                                          icon="vm.itemType.icon"
+                                          allow-edit="true"
+                                          allow-remove="true"
+                                          on-edit="vm.addIcon()"
+                                          on-remove="vm.removeIcon()"
+                                          ng-if="vm.itemType.icon">
+                        </umb-node-preview>
+
+                        <button type="button" class="umb-node-preview-add" ng-click="vm.addIcon()" ng-if="!vm.itemType.icon">
+                            <localize key="general_choose">Choose</localize>
+                        </button>
+                    </umb-control-group>
+
+                    <umb-control-group label="@general_settingsType">
+                        <umb-node-preview name="vm.settingsElementType.name"
+                                          description="vm.settingsElementType.alias"
+                                          icon="vm.settingsElementType.icon"
+                                          allow-edit="true"
+                                          allow-remove="true"
+                                          on-edit="vm.addSettingsType()"
+                                          on-remove="vm.removeSettingsType()"
+                                          ng-if="vm.settingsElementType">
+                        </umb-node-preview>
+
+                        <button type="button" class="umb-node-preview-add" ng-click="vm.addSettingsType()" ng-if="!vm.settingsElementType">
+                            <localize key="general_choose">Choose</localize>
+                        </button>
+                    </umb-control-group>
+
+                    <umb-control-group label="@general_view">
+                        <umb-node-preview name="vm.itemType.view"
+                                          icon="'icon-document'"
+                                          allow-edit="true"
+                                          allow-remove="true"
+                                          on-edit="vm.addView()"
+                                          on-remove="vm.removeView()"
+                                          ng-if="vm.itemType.view">
+                        </umb-node-preview>
+
+                        <button type="button" class="umb-node-preview-add" ng-click="vm.addView()" ng-if="!vm.itemType.view">
+                            <localize key="general_choose">Choose</localize>
+                        </button>
+                    </umb-control-group>
+                </umb-box-content>
+            </umb-box>
+
+            <umb-box>
+                <umb-box-header title="{{vm.labels.permissions}}"></umb-box-header>
+
+                <umb-box-content>
+                    <umb-control-group label="@general_allowAtRoot">
+                        <umb-toggle checked="vm.itemType.allowAtRoot"
+                                    on-click="vm.itemType.allowAtRoot = !vm.itemType.allowAtRoot"
+                                    show-labels="true"
+                                    label-on="{{vm.labels.allowedAtRoot}}"
+                                    label-off="{{vm.labels.notAllowedAtRoot}}"
+                                    label-position="right">
+                        </umb-toggle>
+                    </umb-control-group>
+
+                    <umb-control-group label="@general_allowedTypes">
+                        <umb-toggle checked="vm.allowAllTypes"
+                                    on-click="vm.toggleAllowAllTypes()"
+                                    show-labels="true"
+                                    label-on="{{vm.labels.allowAllTypes}}"
+                                    label-off="{{vm.labels.allowChosenTypes}}"
+                                    label-position="right">
+                        </umb-toggle>
+
+                        <div ng-if="!vm.allowAllTypes">
+                            <umb-checkbox ng-repeat="itemType in vm.itemTypes"
+                                          model="vm.itemType.allowedTypes.includes(itemType.id)"
+                                          name="allowedTypes"
+                                          value="{{itemType.id}}"
+                                          text="{{itemType.name}}"
+                                          on-change="vm.toggleAllowedType(itemType)">
+                            </umb-checkbox>
+                        </div>
+                    </umb-control-group>
+                </umb-box-content>
+            </umb-box>
+        </umb-editor-container>
+
+        <umb-editor-footer>
+            <umb-editor-footer-content-right>
+                <umb-button action="vm.close()"
+                            shortcut="esc"
+                            button-style="link"
+                            label-key="general_close"
+                            type="button">
+                </umb-button>
+
+                <umb-button action="vm.save()"
+                            button-style="primary"
+                            label-key="buttons_save"
+                            type="button">
+                </umb-button>
+            </umb-editor-footer-content-right>
+        </umb-editor-footer>
+
+    </umb-editor-view>
+
+</div>

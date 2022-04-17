@@ -1,0 +1,39 @@
+﻿<div class="meganav" ng-controller="Our.Umbraco.Meganav.PropertyEditors.EditorController as vm">
+
+    <div ui-tree="vm.treeOptions" data-empty-placeholder-enabled="false">
+        <ol ng-model="vm.items" ui-tree-nodes>
+            <li ng-repeat="item in vm.items" ng-include="'node.html'" ui-tree-node></li>
+        </ol>
+    </div>
+
+    <button type="button" class="btn-reset umb-node-preview-add" ng-click="vm.addItem()" ng-if="!vm.maxItems || vm.maxItems > vm.items.length">
+        <localize key="general_add">Add</localize>
+    </button>
+
+    <script type="text/ng-template" id="node.html">
+        <meganav-add on-add="vm.addItem($index, $parentNodeScope.item)"></meganav-add>
+
+        <div class="meganav-item-wrapper" tabindex="0">
+            <div ng-include="item.itemType.view" ng-if="item.itemType && item.itemType.view"></div>
+
+            <div ng-if="!item.itemType || !item.itemType.view" ui-tree-handle>
+                <meganav-preview item="item"
+                                 collapsed="collapsed"
+                                 on-collapse="toggle()">
+                </meganav-preview>
+            </div>
+
+            <meganav-actions item="item"
+                             on-edit="vm.editItem(item, $parentNodeScope.item)"
+                             on-remove="remove()">
+            </meganav-actions>
+        </div>
+
+        <div ng-if="!item.itemType || !item.itemType.view">
+            <ol ng-model="item.children" ng-show="!collapsed" ui-tree-nodes>
+                <li ng-repeat="item in item.children" ng-include="'node.html'" ui-tree-node></li>
+            </ol>
+        </div>
+    </script>
+
+</div>

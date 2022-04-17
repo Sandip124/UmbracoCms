@@ -1,0 +1,40 @@
+﻿<div ng-controller="Our.Umbraco.Meganav.Dialogs.SettingsDialogController as vm">
+
+    <umb-load-indicator ng-if="vm.loading"></umb-load-indicator>
+
+    <umb-editor-view umb-tabs ng-if="!vm.loading">
+
+        <umb-editor-header name="vm.labels.settings"
+                           name-required="false"
+                           name-locked="true"
+                           navigation="vm.tabs"
+                           hide-alias="true"
+                           hide-icon="true"
+                           hide-description="true">
+        </umb-editor-header>
+
+        <umb-editor-container>
+            <umb-editor-sub-views sub-views="vm.tabs" model="vm.model"></umb-editor-sub-views>
+        </umb-editor-container>
+
+        <umb-editor-footer>
+            <umb-editor-footer-content-right>
+                <umb-button action="vm.close()"
+                            shortcut="esc"
+                            button-style="link"
+                            label-key="general_close"
+                            type="button">
+                </umb-button>
+
+                <umb-button-group default-button="vm.saveButton"
+                                  sub-buttons="vm.actionButtons"
+                                  direction="up"
+                                  float="right"
+                                  button-style="primary">
+                </umb-button-group>
+            </umb-editor-footer-content-right>
+        </umb-editor-footer>
+
+    </umb-editor-view>
+
+</div>
